@@ -21,17 +21,19 @@ import IO
 import System.Exit
 import Char
 import List
-import Data.HashTable
+-- import Data.HashTable
+import Database.TokyoCabinet.HDB
 
 skkDictPath = "/usr/share/skk/SKK-JISYO.L"
+hdbFile = "skkjisyo.tch"
 
-version = "hskkd 0.0.20090330"
+version = "hskkd 0.0.20090415"
 
 readUntilSpace s = do
   c <- getChar
   if isSpace c then
       if c == ' ' then
-         return (s ++ [c])
+          return (s ++ [c])
       else
           readUntilSpace s
     else
@@ -45,7 +47,7 @@ hskkd dict = do
       case (findIndex isSpace line) of
         Just i -> do
                let dict_key = tail (take i line)
-               cand <- Data.HashTable.lookup dict dict_key
+               cand <- get dict dict_key
                case cand of
                  Just word -> do 
                            putStr $ "1" ++ word ++ "\n"
@@ -66,8 +68,11 @@ hskkd dict = do
 
 main :: IO()
 main = do
-  dict <- makeDict
-  hskkd dict
+  -- dict <- makeDict
+  hdb <- new
+  open hdb hdbFile [OREADER]
+  hskkd hdb
+{-
   where 
     split2 line  = 
         case findIndex isSpace line of
@@ -77,3 +82,4 @@ main = do
          fromList hashString (map split2 
                                            (filter ((\x -> (';' /= x)).(!! 0)) 
                                             (lines contents)))
+-}
