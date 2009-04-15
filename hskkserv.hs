@@ -77,7 +77,3 @@ main = do
          fromList hashString (map split2 
                                            (filter ((\x -> (';' /= x)).(!! 0)) 
                                             (lines contents)))
-
-
-
-                                   
