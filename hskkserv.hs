@@ -17,11 +17,10 @@
 -}
 
 module Main where
-import IO
+import System.IO
 import System.Exit
-import Char
-import List
--- import Data.HashTable
+import Data.Char
+import Data.List
 import Database.TokyoCabinet.HDB
 
 skkDictPath = "/usr/share/skk/SKK-JISYO.L"
@@ -68,18 +67,6 @@ hskkd dict = do
 
 main :: IO()
 main = do
-  -- dict <- makeDict
   hdb <- new
   open hdb hdbFile [OREADER]
   hskkd hdb
-{-
-  where 
-    split2 line  = 
-        case findIndex isSpace line of
-          Just i -> (take i line, drop (i+1) line)
-    makeDict = do
-         contents <- readFile skkDictPath 
-         fromList hashString (map split2 
-                                           (filter ((\x -> (';' /= x)).(!! 0)) 
-                                            (lines contents)))
--}

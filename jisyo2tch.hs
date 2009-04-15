@@ -19,8 +19,8 @@
 
 import Control.Monad
 import Database.TokyoCabinet.HDB
-import List
-import Char
+import Data.List
+import Data.Char
 
 skkDictPath = "/usr/share/skk/SKK-JISYO.L"
 hdbFile = "skkjisyo.tch"

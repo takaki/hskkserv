@@ -1,0 +1,16 @@
+Name:           HSKKServ
+Version:        0.0.20090415
+Cabal-Version:  >= 1.2
+License:        GPL
+Author:         TANIGUCHI Takaki
+Synopsis:       SKK Server
+Build-Type:     Simple
+
+Executable hskkserv
+  Build-Depends:  base, tokyocabinet-haskell
+  Main-Is:        hskkserv.hs
+
+Executable jisyo2tch
+  Main-Is:        jisyo2tch.hs
+  Build-Depends:  tokyocabinet-haskell
+
