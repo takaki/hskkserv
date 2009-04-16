@@ -21,16 +21,21 @@ import Control.Monad
 import Database.TokyoCabinet.HDB
 import Data.List
 import Data.Char
-
-skkDictPath = "/usr/share/skk/SKK-JISYO.L"
-hdbFile = "skkjisyo.tch"
+import System.Environment
 
 main = do
   hdb <- new
-  contents <- readFile skkDictPath 
-  open hdb hdbFile [OWRITER, OCREAT]
-  mapM_ (uncurry $ put hdb) (map split2 (filter ((\x -> (';' /= x)).(!! 0)) 
+  args <- getArgs
+  if length args == 2 then
+      do
+        let skkDictPath = head args
+            hdbFile = head $ tail args 
+        contents <- readFile skkDictPath 
+        open hdb hdbFile [OWRITER, OCREAT]
+        mapM_ (uncurry $ put hdb) (map split2 (filter ((\x -> (';' /= x)).(!! 0)) 
                                         (lines contents)))
+    else
+      putStr "Usage: jisyo2tch SKK_DICT TCDB\n"
     where
       split2 line  = 
           case findIndex isSpace line of

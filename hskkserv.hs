@@ -17,14 +17,13 @@
 -}
 
 module Main where
+import Control.Monad
+import System.Environment
 import System.IO
 import System.Exit
 import Data.Char
 import Data.List
 import Database.TokyoCabinet.HDB
-
-skkDictPath = "/usr/share/skk/SKK-JISYO.L"
-hdbFile = "skkjisyo.tch"
 
 version = "hskkd 0.0.20090415"
 
@@ -67,6 +66,10 @@ hskkd dict = do
 
 main :: IO()
 main = do
+  args <- getArgs
   hdb <- new
-  open hdb hdbFile [OREADER]
+  open hdb (head args) [OREADER] >>= err hdb
   hskkd hdb
+    where
+      err :: HDB -> Bool -> IO ()
+      err hdb = flip unless $ ecode hdb >>= error . show
